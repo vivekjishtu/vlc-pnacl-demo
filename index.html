@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>VLC pNaCl</title>
+	<script src="ppapi-control.js"></script>
+	
+	<style>
+	#video {
+		height: 480px;		
+	}
+	
+	body, button {
+		font: small-caption;
+	}
+	
+	#controls {
+		display: none;
+	}
+	</style>
+</head>
+<body>
+	<div id="pnlProgress">
+		Downloading plugin: <progress id="pluginProgress" value="0" max="0"></progress>
+	</div>
+	<div id="controls">
+		<button id="btnPlay">Load Video</button>
+	</div>
+	<div id="video"></div>
+	<script async>
+	   var getVlc = null;
+	   var restartVlc = null;
+	   (function() {
+	       "use strict";
+
+	       var embed = null;
+	       var parent = document.getElementById('video');
+		   var pluginProgress = document.getElementById('pluginProgress');
+		   var btnPlay = document.getElementById('btnPlay');
+		   
+		   function btnPlay_Click() {
+			  getVlc().playlist.play();
+			  document.getElementById("controls").style.display = "none";
+		   }
+		   
+		   btnPlay.addEventListener("click", btnPlay_Click, false);
+
+		   restartVlc = function() {
+	           if(embed != null) {
+	               parent.removeChild(embed);
+	           }
+
+	           embed = document.createElement('embed');
+	           embed.setAttribute('id', 'vlc');
+	         //  embed.setAttribute('src', 'vlc-debug.nmf');
+	          // embed.setAttribute('type', 'application/x-nacl');
+	           // Comment out the following two lines if debugging VLC
+	           embed.setAttribute('src', 'vlc-release.nmf');
+	           embed.setAttribute('type', 'application/x-pnacl');
+	           embed.setAttribute('width', '100%');
+	           embed.setAttribute('height', '100%');
+
+			   embed.addEventListener('progress', function(event) {
+					pluginProgress.value = event.loaded;
+					pluginProgress.max = event.total;
+					//console.log(event.loaded + " " + event.total);
+			   });
+			   
+			   embed.addEventListener("message", function(message) {
+					//console.log(message);
+			   });
+	           embed.addEventListener('load', function() {
+	               var instance = new VlcInstance(embed);
+	               getVlc = function() {
+	                   return instance;
+	               };
+				   
+				   getVlc().playlist.enqueue(window.location + "/BigBugBunny.flv");
+				   
+				   //getVlc().playlist.play();
+				   document.getElementById("pnlProgress").style.display = "none";
+				   document.getElementById("controls").style.display = "block";
+	           });
+			   
+	           parent.appendChild(embed);
+	      };
+	      restartVlc();
+	  })();
+	</script>
+</body>
+</html>
