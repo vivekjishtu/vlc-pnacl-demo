@@ -1,7 +1,7 @@
 # VLC pNaCl Demo
 
 ~~You can see a live demo at https://vivekjishtu.github.io/vlc-pnacl-demo~~
-The online demo is currently not working. Clone this repo and switch to the [**gh-pages**](https://github.com/vivekjishtu/vlc-pnacl-demo/tree/gh-pages) branch. Host those file on your local server and it should work.
+The online demo is currently not working. Clone this repo and switch to the [**gh-pages**](https://github.com/vivekjishtu/vlc-pnacl-demo/tree/gh-pages) branch. Host these file on your local server and it should work.
 
 This sample shows the use of the VLC pNaCl plugin. The source code for the vlc plugin is located at https://github.com/vivekjishtu/vlc-nacl which was forked from https://github.com/DiamondLovesYou/vlc-nacl
 
